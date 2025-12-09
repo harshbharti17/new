@@ -6,7 +6,7 @@ import RelatedProducts from "../components/RelatedProducts";
 
 const Product = () => {
   const { productId } = useParams();
-  const { products, currency } = useContext(ShopContext);
+  const { products, currency, addToCart } = useContext(ShopContext);
 
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState("");
@@ -18,7 +18,7 @@ const Product = () => {
         setProductData(item);
 
         setImage(item.image[0]);
-        console.log(item);
+        // console.log(item);
 
         return null;
       }
@@ -84,7 +84,10 @@ const Product = () => {
               ))}
             </div>
           </div>
-          <button className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700 cursor-pointer">
+          <button
+            onClick={() => addToCart(productData._id, size)}
+            className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700 cursor-pointer"
+          >
             ADD TO CART
           </button>
           <hr className="mt-8 sm:w-4/5" />
@@ -121,8 +124,10 @@ const Product = () => {
         </div>
       </div>
       {/* ---------display related products------ */}
-      <RelatedProducts category={productData.category} subCategory={productData.subCategory}/>
-
+      <RelatedProducts
+        category={productData.category}
+        subCategory={productData.subCategory}
+      />
     </div>
   ) : (
     <div className="opacity-0"></div>
