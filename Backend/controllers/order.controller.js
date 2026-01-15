@@ -41,7 +41,21 @@ const placeOrderStripe = async (req, res) => {};
 const placeOrderRazorpay = async (req, res) => {};
 
 //All orders data for admin panel
-const allOrders = async (req, res) => {};
+const allOrders = async (req, res) => {
+  try {
+    const orders = await orderModel.find({});
+    res.json({
+      success: true,
+      orders,
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
 //user order data for Frontend
 const userOrders = async (req, res) => {
