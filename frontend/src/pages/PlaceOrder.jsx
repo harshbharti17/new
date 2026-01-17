@@ -17,7 +17,6 @@ const PlaceOrder = () => {
     getCartAmount,
     deliveryFee,
     products,
-    currency,
   } = useContext(ShopContext);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -48,6 +47,20 @@ const PlaceOrder = () => {
       receipt: order.receipt,
       handler: async (response) => {
         console.log(response);
+        try {
+          const { data } = await axios.post(
+            backendUrl + "/api/order/verifyRazorpay",
+            response,
+            { headers: { token } }
+          );
+          if (data.success) {
+            navigate("/orders");
+            setCartItems({});
+          }
+        } catch (error) {
+          console.log(error);
+          toast.error(error.message);
+        }
       },
     };
     const rzp = new window.Razorpay(options);
